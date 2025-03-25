@@ -213,4 +213,3 @@ fn test_course_data_persistence() {
     assert(course.tutor == admin_address, 'Tutor address mismatch');
 }
 
-

@@ -77,20 +77,16 @@ pub mod SkillNet {
             tags: felt252,
         ) -> u256 {
             // Ensure only the admin can create courses
-            assert!(
-                self.admin.read() == get_caller_address(),
-                "Not Admin",
-            );
-        
+            assert!(self.admin.read() == get_caller_address(), "Not Admin",);
+
             // Validate input parameters
             assert!(title != 0, "Course title cannot be empty");
             assert!(description != 0, "Course description cannot be empty");
             assert!(is_free || price > 0, "Paid courses must have a price greater than zero");
 
-        
             // Get the current course ID
             let course_id = self.next_course_id.read(); // Use it before incrementing
-        
+
             // Create a new course struct
             let new_course = Course {
                 id: course_id,
@@ -104,16 +100,16 @@ pub mod SkillNet {
                 updated_at: get_block_timestamp(),
                 students_id: 0,
             };
-        
+
             // Store the course in the courses map
             self.courses.write(course_id, new_course);
-        
+
             // Increment course ID and update storage **after** using it
             self.next_course_id.write(course_id + 1);
-        
+
             course_id
         }
-        
+
 
         fn get_course(self: @ContractState, course_id: u256) -> Course {
             // Retrieve and return the course
@@ -229,7 +225,5 @@ pub mod SkillNet {
         fn get_skillnet_wallet(self: @ContractState) -> ContractAddress {
             self.skillnet_wallet.read()
         }
-
-        
     }
 }
